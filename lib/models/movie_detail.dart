@@ -1,5 +1,4 @@
 import 'package:imovies/models/cast.dart';
-import 'package:imovies/models/movie_image.dart';
 
 class MovieDetail {
   final String id;
@@ -16,8 +15,6 @@ class MovieDetail {
   final String voteCount;
 
   String? trailerId;
-
-  MovieImage? movieImage;
 
   List<Cast>? castList;
 

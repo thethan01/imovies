@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:imovies/models/cast.dart';
 import 'package:imovies/models/genre.dart';
 import 'package:imovies/models/movie.dart';
 import 'package:imovies/models/movie_detail.dart';
@@ -49,14 +50,39 @@ class ApiService {
     try {
       final response = await _dio.get('$baseUrl/movie/$movieId?$apiKey');
       MovieDetail movieDetail = MovieDetail.fromJson(response.data);
-      //
-      // movieDetail.trailerId = await getYoutubeId(movieId);
-      //
-      // movieDetail.movieImage = await getMovieImage(movieId);
-      //
-      // movieDetail.castList = await getCastList(movieId);
+
+      movieDetail.trailerId = await getYoutubeId(movieId);
+
+      movieDetail.castList = await getCastList(movieId);
 
       return movieDetail;
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
+  Future<String> getYoutubeId(int id) async {
+    try {
+      final response = await _dio.get('$baseUrl/movie/$id/videos?$apiKey');
+      var youtubeId = response.data['results'][0]['key'];
+      return youtubeId;
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
+  Future<List<Cast>> getCastList(int movieId) async {
+    try {
+      final response =
+      await _dio.get('$baseUrl/movie/$movieId/credits?$apiKey');
+      var list = response.data['cast'] as List;
+      List<Cast> castList = list
+          .map((c) => Cast(
+          name: c['name'],
+          profilePath: c['profile_path'],
+          character: c['character']))
+          .toList();
+      return castList;
     } catch (error, stacktrace) {
       throw Exception(
           'Exception accoured: $error with stacktrace: $stacktrace');

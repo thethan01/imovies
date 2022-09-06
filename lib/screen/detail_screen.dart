@@ -7,8 +7,10 @@ import 'package:imovies/blocs/movie_detail/movie_detail_bloc.dart';
 import 'package:imovies/blocs/movie_detail/movie_detail_event.dart';
 import 'package:imovies/blocs/movie_detail/movie_detail_state.dart';
 import 'package:imovies/constant.dart';
+import 'package:imovies/models/cast.dart';
 import 'package:imovies/models/movie.dart';
 import 'package:imovies/models/movie_detail.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailScreen extends StatefulWidget {
   final Movie movie;
@@ -40,7 +42,8 @@ class _DetailScreenState extends State<DetailScreen>
     return BlocBuilder<MovieDetailBloc, MovieDetailState>(
       builder: (context, state) {
         if (state is MovieDetailLoading) {
-          return const CupertinoActivityIndicator(color: Colors.white);
+          return const Center(
+              child: CupertinoActivityIndicator(color: Colors.white));
         } else if (state is MovieDetailLoaded) {
           MovieDetail movieDetail = state.detail;
           return SingleChildScrollView(
@@ -72,6 +75,25 @@ class _DetailScreenState extends State<DetailScreen>
                         ),
                       ),
                     ), // banner
+                    Padding(
+                      padding: EdgeInsets.only(
+                          top: MediaQuery.of(context).size.height / 4,
+                          left: MediaQuery.of(context).size.width - 75),
+                      child: GestureDetector(
+                        onTap: () async {
+                          final youtubeUrl = Uri.parse(
+                              'https://www.youtube.com/embed/${movieDetail.trailerId}');
+                          if (await canLaunchUrl(youtubeUrl)) {
+                            await launchUrl(youtubeUrl);
+                          }
+                        }, // su kien ontap
+                        child: const Icon(
+                          CupertinoIcons.play_circle,
+                          color: kDarkColor,
+                          size: 65,
+                        ),
+                      ),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(
                           left: 25,
@@ -163,10 +185,10 @@ class _DetailScreenState extends State<DetailScreen>
                               Tab(
                                 text: "Casts",
                               ),
-                            ],// TabBar
+                            ], // TabBar
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 65, right: 10),
+                            padding: const EdgeInsets.only(top: 65),
                             child: TabBarView(
                                 controller: _tabController,
                                 children: [
@@ -180,7 +202,7 @@ class _DetailScreenState extends State<DetailScreen>
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white),
-                                      ),// text Overviews
+                                      ), // text Overviews
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 8, bottom: 10),
@@ -190,7 +212,7 @@ class _DetailScreenState extends State<DetailScreen>
                                               fontSize: 14,
                                               color: Colors.white),
                                         ),
-                                      ),// Overview
+                                      ), // Overview
                                       Row(
                                         children: [
                                           SizedBox(
@@ -214,7 +236,7 @@ class _DetailScreenState extends State<DetailScreen>
                                                 color: Colors.white),
                                           ),
                                         ],
-                                      ),// Release Date
+                                      ), // Release Date
                                       Padding(
                                         padding: const EdgeInsets.only(top: 15),
                                         child: Row(
@@ -241,15 +263,15 @@ class _DetailScreenState extends State<DetailScreen>
                                             ),
                                           ],
                                         ),
-                                      ),// Budget
+                                      ), // Budget
                                       Padding(
                                         padding: const EdgeInsets.only(top: 15),
                                         child: Row(
                                           children: [
                                             SizedBox(
                                               width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
+                                                      .size
+                                                      .width /
                                                   2,
                                               child: Text(
                                                 "Duration:\n${movieDetail.runtime} Minutes",
@@ -261,11 +283,130 @@ class _DetailScreenState extends State<DetailScreen>
                                             ),
                                           ],
                                         ),
-                                      )//Duration
+                                      ) //Duration
                                     ],
-                                  ),//Tab About movie
-                                  const Text("Reviews"),
-                                  const Text("Casts"),
+                                  ), //Tab About movie
+                                  Column(
+                                    children: const [
+                                      Text("Reviews"),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const Text(
+                                        "Casts:",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: SizedBox(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              3,
+                                          child: ListView.separated(
+                                            separatorBuilder:
+                                                (context, index) =>
+                                                    const VerticalDivider(
+                                              color: Colors.transparent,
+                                              width: 10,
+                                            ),
+                                            scrollDirection: Axis.horizontal,
+                                            itemCount:
+                                                movieDetail.castList!.length,
+                                            itemBuilder: (context, index) {
+                                              Cast cast =
+                                                  movieDetail.castList![index];
+                                              String url;
+                                              if (cast.profilePath == null) {
+                                                url =
+                                                    'https://image.tmdb.org/t/p/w200/10RyQ33J0ybXFzzXylgeF2yoMbx.jpg';
+                                              } else {
+                                                url =
+                                                    'https://image.tmdb.org/t/p/w200${cast.profilePath}';
+                                              } // neu profilePath =  null thi thay the bang url bat ky
+                                              return Column(
+                                                children: [
+                                                  Card(
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(100),
+                                                      ),
+                                                      elevation: 3,
+                                                      child: ClipRRect(
+                                                          child:
+                                                              CachedNetworkImage(
+                                                        imageUrl: url,
+                                                        imageBuilder: (context,
+                                                            imageBuilder) {
+                                                          return Container(
+                                                            width: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .width /
+                                                                3.2,
+                                                            height: MediaQuery.of(
+                                                                        context)
+                                                                    .size
+                                                                    .height /
+                                                                5,
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              borderRadius:
+                                                                  const BorderRadius
+                                                                          .all(
+                                                                      Radius.circular(
+                                                                          16)),
+                                                              image:
+                                                                  DecorationImage(
+                                                                image:
+                                                                    imageBuilder,
+                                                                fit: BoxFit
+                                                                    .cover,
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ))), // the dien vien
+                                                  Center(
+                                                    child: Text(
+                                                      cast.name,
+                                                      style: const TextStyle(
+                                                          fontSize: 13,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                  SizedBox(
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            3.2,
+                                                    child: Center(
+                                                      child: Text(
+                                                        '(${cast.character})',
+                                                        style: const TextStyle(
+                                                            fontSize: 13,
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ]),
                           )
                         ],
@@ -280,7 +421,8 @@ class _DetailScreenState extends State<DetailScreen>
             ),
           );
         } else {
-          return const CupertinoActivityIndicator(color: Colors.white);
+          return const Center(
+              child: CupertinoActivityIndicator(color: Colors.white));
         }
       },
     );

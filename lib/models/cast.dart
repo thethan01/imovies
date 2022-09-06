@@ -6,7 +6,7 @@ class CastList {
 
 class Cast {
   final String name;
-  final String profilePath;
+  final dynamic profilePath;
   final String character;
 
   Cast({required this.name, required this.profilePath, required this.character});
