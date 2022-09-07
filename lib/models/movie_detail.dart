@@ -1,4 +1,5 @@
 import 'package:imovies/models/cast.dart';
+import 'package:imovies/models/reviews.dart';
 
 class MovieDetail {
   final String id;
@@ -17,6 +18,7 @@ class MovieDetail {
   String? trailerId;
 
   List<Cast>? castList;
+  List<Review>? reviewList;
 
   MovieDetail(
       {required this.id,

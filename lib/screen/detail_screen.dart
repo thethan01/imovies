@@ -10,6 +10,7 @@ import 'package:imovies/constant.dart';
 import 'package:imovies/models/cast.dart';
 import 'package:imovies/models/movie.dart';
 import 'package:imovies/models/movie_detail.dart';
+import 'package:imovies/models/reviews.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailScreen extends StatefulWidget {
@@ -287,8 +288,67 @@ class _DetailScreenState extends State<DetailScreen>
                                     ],
                                   ), //Tab About movie
                                   Column(
-                                    children: const [
-                                      Text("Reviews"),
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.only(right: 20, top: 10),
+                                        child: SizedBox(
+                                          height:
+                                              MediaQuery.of(context).size.height- MediaQuery.of(context).size.height/3
+                                                  ,
+                                          child: ListView.separated(
+                                            separatorBuilder: (context, index) =>
+                                                const VerticalDivider(
+                                              color: Colors.transparent,
+                                              width: 10,
+                                            ),
+                                            scrollDirection: Axis.vertical,
+                                            itemCount:
+                                                movieDetail.reviewList!.length,
+                                            itemBuilder: (context, index) {
+                                              Review review =
+                                                  movieDetail.reviewList![index];
+                                              String url;
+                                              if (review.avatarPath != null) {
+                                                url =
+                                                'https://image.tmdb.org/t/p/w200${review.avatarPath}';
+                                              } else {
+                                                url =
+                                                'https://image.tmdb.org/t/p/w200//xyE9MCa5m701z6avIlfEgFXmcAx.jpg';
+                                              } // neu avatarPath =  null thi thay the bang url bat ky
+                                              return Stack(
+                                                children: [
+                                                  CachedNetworkImage(
+                                                    imageUrl: url,
+                                                    imageBuilder: (context,
+                                                        imageBuilder) {
+                                                      return Container(
+                                                        width: 80,
+                                                        height: 80,
+                                                        decoration:
+                                                        BoxDecoration(
+                                                          borderRadius:
+                                                          const BorderRadius
+                                                              .all(
+                                                              Radius.circular(
+                                                                  16)),
+                                                          image:
+                                                          DecorationImage(
+                                                            image:
+                                                            imageBuilder,
+                                                            fit: BoxFit
+                                                                .cover,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                  Text(review.content)
+                                                ],
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   Column(
