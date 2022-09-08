@@ -5,27 +5,24 @@ class ReviewsList {
 }
 
 class Review {
-  final dynamic name;
-  final dynamic username;
+  final dynamic author;
   final dynamic avatarPath;
   final dynamic rating;
   final dynamic content;
   final dynamic createdAt;
 
   Review({
-    this.username,
     this.avatarPath,
     required this.rating,
     required this.content,
     required this.createdAt,
-    required this.name,
+    required this.author,
   });
 
   factory Review.fromJson(dynamic json) {
     if (json == null) {
       return Review(
-          name: '',
-          username: '',
+          author: '',
           avatarPath: '',
           rating: '',
           content: '',
@@ -33,8 +30,7 @@ class Review {
     }
 
     return Review(
-      name: json['name'],
-      username: json['username'],
+      author: json['author'],
       avatarPath: json['avatar_path'],
       createdAt: json['created_at'],
       content: json['content'],

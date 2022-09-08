@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:readmore/readmore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -90,7 +91,7 @@ class _DetailScreenState extends State<DetailScreen>
                         }, // su kien ontap
                         child: const Icon(
                           CupertinoIcons.play_circle,
-                          color: kDarkColor,
+                          color: Colors.white,
                           size: 65,
                         ),
                       ),
@@ -289,68 +290,157 @@ class _DetailScreenState extends State<DetailScreen>
                                   ), //Tab About movie
                                   Column(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(right: 20, top: 10),
-                                        child: SizedBox(
-                                          height:
-                                              MediaQuery.of(context).size.height- MediaQuery.of(context).size.height/3
-                                                  ,
-                                          child: ListView.separated(
-                                            separatorBuilder: (context, index) =>
-                                                const VerticalDivider(
-                                              color: Colors.transparent,
-                                              width: 10,
-                                            ),
-                                            scrollDirection: Axis.vertical,
-                                            itemCount:
-                                                movieDetail.reviewList!.length,
-                                            itemBuilder: (context, index) {
-                                              Review review =
-                                                  movieDetail.reviewList![index];
-                                              String url;
-                                              if (review.avatarPath != null) {
-                                                url =
-                                                'https://image.tmdb.org/t/p/w200${review.avatarPath}';
-                                              } else {
-                                                url =
-                                                'https://image.tmdb.org/t/p/w200//xyE9MCa5m701z6avIlfEgFXmcAx.jpg';
-                                              } // neu avatarPath =  null thi thay the bang url bat ky
-                                              return Stack(
-                                                children: [
-                                                  CachedNetworkImage(
-                                                    imageUrl: url,
+                                      SizedBox(
+                                        height: MediaQuery.of(context)
+                                                .size
+                                                .height -
+                                            MediaQuery.of(context).size.height /
+                                                3,
+                                        child: ListView.separated(
+                                          separatorBuilder: (context, index) =>
+                                              const VerticalDivider(
+                                            color: Colors.transparent,
+                                            width: 10,
+                                          ),
+                                          scrollDirection: Axis.vertical,
+                                          itemCount:
+                                              movieDetail.reviewList!.length,
+                                          itemBuilder: (context, index) {
+                                            Review review =
+                                                movieDetail.reviewList![index];
+                                            return Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          right: 10),
+                                                  child: CachedNetworkImage(
+                                                    imageUrl:
+                                                        'https://image.tmdb.org/t/p/w200//xyE9MCa5m701z6avIlfEgFXmcAx.jpg',
                                                     imageBuilder: (context,
                                                         imageBuilder) {
                                                       return Container(
-                                                        width: 80,
-                                                        height: 80,
+                                                        width: 65,
+                                                        height: 65,
                                                         decoration:
-                                                        BoxDecoration(
+                                                            BoxDecoration(
                                                           borderRadius:
-                                                          const BorderRadius
-                                                              .all(
-                                                              Radius.circular(
-                                                                  16)),
+                                                              const BorderRadius
+                                                                      .all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          100)),
                                                           image:
-                                                          DecorationImage(
-                                                            image:
-                                                            imageBuilder,
-                                                            fit: BoxFit
-                                                                .cover,
+                                                              DecorationImage(
+                                                            image: imageBuilder,
+                                                            fit: BoxFit.cover,
                                                           ),
                                                         ),
                                                       );
                                                     },
                                                   ),
-                                                  Text(review.content)
-                                                ],
-                                              );
-                                            },
-                                          ),
+                                                ), // avatar
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          bottom: 30),
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(15),
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            color: kDarkColor,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .all(Radius
+                                                                        .circular(
+                                                                            20)),
+                                                          ),
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              1.45,
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                review.author
+                                                                    .toString(),
+                                                                style: const TextStyle(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                              Padding(
+                                                                padding:
+                                                                    const EdgeInsets
+                                                                            .only(
+                                                                        top: 6),
+                                                                child:
+                                                                    ReadMoreText(
+                                                                  review
+                                                                      .content,
+                                                                  trimLines: 4,
+                                                                  style: const TextStyle(
+                                                                      fontSize:
+                                                                          14,
+                                                                      color: Colors
+                                                                          .white),
+                                                                  trimCollapsedText:
+                                                                      '...Read more',
+                                                                  trimExpandedText:
+                                                                      ' Show less',
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          )), // main review
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                    .only(
+                                                                left: 15,
+                                                                top: 5),
+                                                        child: Text(
+                                                          review.createdAt
+                                                              .toString()
+                                                              .substring(0, 10),
+                                                          style:
+                                                              const TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                  color: Colors
+                                                                      .white),
+                                                        ),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ) // content
+                                              ],
+                                            );
+                                          },
                                         ),
                                       ),
                                     ],
-                                  ),
+                                  ),// tab reviews
                                   Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -382,14 +472,6 @@ class _DetailScreenState extends State<DetailScreen>
                                             itemBuilder: (context, index) {
                                               Cast cast =
                                                   movieDetail.castList![index];
-                                              String url;
-                                              if (cast.profilePath == null) {
-                                                url =
-                                                    'https://image.tmdb.org/t/p/w200/10RyQ33J0ybXFzzXylgeF2yoMbx.jpg';
-                                              } else {
-                                                url =
-                                                    'https://image.tmdb.org/t/p/w200${cast.profilePath}';
-                                              } // neu profilePath =  null thi thay the bang url bat ky
                                               return Column(
                                                 children: [
                                                   Card(
@@ -397,13 +479,14 @@ class _DetailScreenState extends State<DetailScreen>
                                                           RoundedRectangleBorder(
                                                         borderRadius:
                                                             BorderRadius
-                                                                .circular(100),
+                                                                .circular(20),
                                                       ),
                                                       elevation: 3,
                                                       child: ClipRRect(
                                                           child:
                                                               CachedNetworkImage(
-                                                        imageUrl: url,
+                                                        imageUrl:
+                                                            'https://image.tmdb.org/t/p/w200${cast.profilePath}',
                                                         imageBuilder: (context,
                                                             imageBuilder) {
                                                           return Container(
@@ -434,6 +517,46 @@ class _DetailScreenState extends State<DetailScreen>
                                                             ),
                                                           );
                                                         },
+                                                        placeholder:
+                                                            (context, url) =>
+                                                                SizedBox(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              3.2,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              5,
+                                                          child: const Center(
+                                                            child:
+                                                                CupertinoActivityIndicator(),
+                                                          ),
+                                                        ),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            Container(
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              3.2,
+                                                          height: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .height /
+                                                              5,
+                                                          decoration:
+                                                              const BoxDecoration(
+                                                            image:
+                                                                DecorationImage(
+                                                              image: AssetImage(
+                                                                  'assets/images/img_not_found.jpg'),
+                                                            ),
+                                                          ),
+                                                        ),
                                                       ))), // the dien vien
                                                   Center(
                                                     child: Text(
@@ -466,7 +589,7 @@ class _DetailScreenState extends State<DetailScreen>
                                         ),
                                       )
                                     ],
-                                  ),
+                                  ), // tab casts
                                 ]),
                           )
                         ],

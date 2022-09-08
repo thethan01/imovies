@@ -102,11 +102,10 @@ class ApiService {
       var list = response.data['results'] as List;
       List<Review> reviewList = list
           .map((r) => Review(
-              name: r['name'],
+              author: r['author'],
               rating: r['rating'],
               createdAt: r['created_at'],
               content: r['content'],
-              username: r['username'],
               avatarPath: r['avatar_path']))
           .toList();
       return reviewList;
