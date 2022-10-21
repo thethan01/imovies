@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "905098019916",
+    "project_id": "imovieapp-d8cd4",
+    "storage_bucket": "imovieapp-d8cd4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905098019916:android:6031d6d7b32f79143ea0e9",
+        "android_client_info": {
+          "package_name": "com.example.imovies"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905098019916-31e1ka9us4m8l4fomankltjqve2cd5sq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDcbObiwiSq8KFCT_01yhI6Y4gdXlVVV0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905098019916-31e1ka9us4m8l4fomankltjqve2cd5sq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

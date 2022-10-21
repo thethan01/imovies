@@ -15,6 +15,7 @@ import 'package:imovies/screen/detail_screen.dart';
 
 class Category extends StatefulWidget {
   final int selectGenre;
+
   const Category({Key? key, this.selectGenre = 28}) : super(key: key);
 
   @override
@@ -23,6 +24,7 @@ class Category extends StatefulWidget {
 
 class _CategoryState extends State<Category> {
   late int selectGenre;
+
   @override
   void initState() {
     super.initState();
@@ -109,7 +111,10 @@ class _CategoryState extends State<Category> {
               ),
             ); // ListView chon chu de phim
           } else {
-            return const Center(child: Text('Error'));
+            return const Center(
+                child: CupertinoActivityIndicator(
+              color: Colors.white,
+            ));
           }
         }),
         BlocBuilder<MovieGenreBloc, MovieGenreState>(builder: (context, state) {
@@ -145,8 +150,7 @@ class _CategoryState extends State<Category> {
                                       child: CachedNetworkImage(
                                         imageUrl:
                                             'https://image.tmdb.org/t/p/original/${movie.posterPath}',
-                                        imageBuilder:
-                                            (context, imageProvider) {
+                                        imageBuilder: (context, imageProvider) {
                                           return Container(
                                             width: MediaQuery.of(context)
                                                     .size
@@ -179,7 +183,8 @@ class _CategoryState extends State<Category> {
                                         // errorWidget: (context, url, error) =>
                                         //     Container(),
                                       ),
-                                    ), // Hinh minh hoa
+                                    ),
+                                    // Hinh minh hoa
                                     Padding(
                                       padding: EdgeInsets.only(
                                           left: MediaQuery.of(context)
@@ -239,7 +244,8 @@ class _CategoryState extends State<Category> {
                                           ],
                                         ), // so luoc phim
                                       ),
-                                    ), // so luoc phim
+                                    ),
+                                    // so luoc phim
                                     // Padding(
                                     //   padding: EdgeInsets.only(
                                     //       left: MediaQuery.of(context)

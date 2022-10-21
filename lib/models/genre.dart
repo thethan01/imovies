@@ -1,6 +1,6 @@
 class Genre {
-  final int id;
-  final String name;
+  final dynamic id;
+  final dynamic name;
 
   String? error;
 
@@ -8,7 +8,7 @@ class Genre {
 
   factory Genre.fromJson(dynamic json) {
     if (json == null) {
-      return Genre(name: '', id:1);
+      return Genre(name: '', id: 1);
     }
     return Genre(id: json['id'], name: json['name']);
   }
