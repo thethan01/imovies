@@ -114,4 +114,32 @@ class ApiService {
           'Exception accoured: $error with stacktrace: $stacktrace');
     }
   }
+
+  Future<List<Movie>> getSearchResult(String query) async {
+    try {
+      final response =
+          await _dio.get('$baseUrl/search/movie?$apiKey&query=$query&page=1');
+      var list = response.data['results'] as List;
+      List<Movie> searchMovieList = list
+          .map((m) => Movie(
+                id: m['id'],
+                posterPath: m['poster_path'],
+                voteAverage: m['vote_average'],
+                voteCount: m['vote_count'],
+                originalLanguage: m['original_language'],
+                popularity: m['popularity'],
+                title: m['title'],
+                releaseDate: m['release_date'],
+                video: m['video'],
+                overview: m['overview'],
+                originalTitle: m['original_title'],
+                backdropPath: m['backdrop_path'],
+              ))
+          .toList();
+      return searchMovieList;
+    } catch (error, stacktrace) {
+      throw Exception(
+          'Exception accoured: $error with stacktrace: $stacktrace');
+    }
+  }
 }

@@ -136,7 +136,10 @@ class _CategoryState extends State<Category> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(horizontal: 25),
-                                child: Stack(
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     GestureDetector(
                                       onTap: () {
@@ -185,65 +188,55 @@ class _CategoryState extends State<Category> {
                                       ),
                                     ),
                                     // Hinh minh hoa
-                                    Padding(
-                                      padding: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              2.6),
-                                      child: SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                2,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 15,
-                                                  top: 10,
-                                                  left: 15),
-                                              child: Text(
-                                                'Title:\n${movie.title}',
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white),
-                                              ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 2,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 15, top: 10, left: 15),
+                                            child: Text(
+                                              'Title:\n${movie.title}',
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 15, left: 15),
-                                              child: Text(
-                                                'Release Date:\n${movie.releaseDate}',
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white),
-                                              ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 15, left: 15),
+                                            child: Text(
+                                              'Release Date:\n${movie.releaseDate}',
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 15, left: 15),
-                                              child: Text(
-                                                'Vote Count:\n${movie.voteCount}',
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white),
-                                              ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 15, left: 15),
+                                            child: Text(
+                                              'Vote Count:\n${movie.voteCount}',
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 15),
-                                              child: Text(
-                                                'Vote Average:\n${movie.voteAverage}',
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white),
-                                              ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                const EdgeInsets.only(left: 15),
+                                            child: Text(
+                                              'Vote Average:\n${movie.voteAverage}',
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Colors.white),
                                             ),
-                                          ],
-                                        ), // so luoc phim
-                                      ),
+                                          ),
+                                        ],
+                                      ), // so luoc phim
                                     ),
                                     // so luoc phim
                                     // Padding(

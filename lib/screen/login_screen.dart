@@ -1,6 +1,7 @@
 import 'package:imovies/constant.dart';
 import 'package:imovies/screen/get_started.dart';
-import 'package:imovies/screen/home_screen.dart';
+import 'package:imovies/screen/main_screen.dart';
+
 // import 'package:imovies/screen/signup.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:imovies/screen/sign_up.dart';
 class SignIn extends StatefulWidget {
   const SignIn({Key? key}) : super(key: key);
   static const String id = "SigIn_screen";
+
   @override
   State<SignIn> createState() => _SignInState();
 }
@@ -68,10 +70,8 @@ class _SignInState extends State<SignIn> {
                     style: TextStyle(color: Colors.white, fontSize: 16)),
               ), // Text LOG IN WITH EMAIL
               Padding(
-                padding:
-                    const EdgeInsets.only(bottom: 20, right: 20, left: 20),
+                padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
                 child: TextField(
-
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.done,
                   decoration: InputDecoration(
@@ -89,8 +89,7 @@ class _SignInState extends State<SignIn> {
                 ),
               ), // TextField Email
               Padding(
-                padding:
-                    const EdgeInsets.only(bottom: 20, right: 20, left: 20),
+                padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
                 child: TextField(
                   keyboardType: TextInputType.emailAddress,
                   textInputAction: TextInputAction.done,
@@ -127,24 +126,23 @@ class _SignInState extends State<SignIn> {
                         fontWeight: FontWeight.bold),
                   ),
                 ),
-              ),// Sign In button
+              ), // Sign In button
               Padding(
                 padding: const EdgeInsets.only(top: 25, bottom: 20),
                 child: RichText(
                     text: TextSpan(
                         text: 'Forgot Password?',
-                        style: const TextStyle(
-                            color: Colors.white, fontSize: 14),
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 14),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             // Navigator.pushNamed(context, ForgotPassword.id);
                           })),
-              ),// Forgot Password
+              ), // Forgot Password
               RichText(
                 text: TextSpan(
                     text: 'Don\'t have account?',
-                    style:
-                        const TextStyle(color: Colors.white, fontSize: 14),
+                    style: const TextStyle(color: Colors.white, fontSize: 14),
                     children: [
                       TextSpan(
                           text: ' Sign up',
@@ -155,7 +153,7 @@ class _SignInState extends State<SignIn> {
                               Navigator.pushNamed(context, SignUp.id);
                             })
                     ]),
-              )// Sign Up
+              ) // Sign Up
             ],
           ),
         ),

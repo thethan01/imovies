@@ -1,6 +1,6 @@
 import 'package:imovies/constant.dart';
 import 'package:imovies/screen/get_started.dart';
-import 'package:imovies/screen/home_screen.dart';
+import 'package:imovies/screen/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
   static const String id = "SignUp_screen";
+
   @override
   State<SignUp> createState() => _SignUpState();
 }
@@ -16,6 +17,7 @@ class _SignUpState extends State<SignUp> {
   TextEditingController reEnterPassword = TextEditingController();
   TextEditingController emailAddressTextEdit = TextEditingController();
   TextEditingController passwordTextEdit = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -116,7 +118,7 @@ class _SignUpState extends State<SignUp> {
                   textInputAction: TextInputAction.done,
                   obscureText: true,
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    hintText: 'Confirm Password',
                     enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(15),
                         borderSide: const BorderSide(color: Colors.white)),
@@ -156,6 +158,4 @@ class _SignUpState extends State<SignUp> {
       ),
     );
   }
-
 }
-

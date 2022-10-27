@@ -1,43 +1,38 @@
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-import 'package:imovies/models/movie.dart';
-import 'package:imovies/services/api_service.dart';
+import 'package:imovies/blocs/search/search_event.dart';
+import 'package:imovies/blocs/search/search_state.dart';
+import 'package:stream_transform/stream_transform.dart';
 
-part 'search_state.dart';
+import '../../services/api_service.dart';
 
-class SearchCubit extends Cubit<SearchState> {
-  SearchCubit() : super(SearchInitial());
+const _duration = Duration(milliseconds: 300);
 
-  Future<void> informInitial() async {
-    if (kDebugMode) {
-      print("Search page is loading");
-    }
+EventTransformer<Event> debounce<Event>(Duration duration) {
+  return (events, mapper) => events.debounce(duration).switchMap(mapper);
+}
+
+class SearchBloc extends Bloc<SearchEvent, SearchState> {
+  SearchBloc() : super(SearchStateEmpty()) {
+    on<TextChanged>(_onTextChanged, transformer: debounce(_duration));
   }
 
-  Future<void> loadSearch(String query) async {
-    final service = ApiService();
-    print(query);
+  final service = ApiService();
+
+  void _onTextChanged(
+    TextChanged event,
+    Emitter<SearchState> emit,
+  ) async {
+    final searchTerm = event.query;
+
+    if (searchTerm.isEmpty) return emit(SearchStateEmpty());
+
+    emit(SearchStateLoading());
+
     try {
-      if (query.length > 0) {
-        await Future.delayed(const Duration(milliseconds: 500));
-        final search_list = await service.getSearchResult(query);
-        emit(SearchLoadedState(search_list));
-        print('Search loaded');
-      } else {
-        emit(SearchInitial());
-      }
-    } catch (e) {
-      if (isClosed == false) {
-        emit(SearchErrorState());
-      }
-    }
-  }
-
-  Future<void> reloadSearch() async {
-    if (isClosed == false) {
-      print("reload");
-      emit(SearchInitial());
+      final results = await service.getSearchResult(event.query);
+      emit(SearchStateSuccess(results));
+    } catch (error) {
+      emit(SearchStateError(error.toString()));
     }
   }
 }

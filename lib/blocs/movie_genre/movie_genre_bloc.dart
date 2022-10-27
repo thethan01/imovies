@@ -8,6 +8,7 @@ class MovieGenreBloc extends Bloc<MovieGenreEvent, MovieGenreState> {
   MovieGenreBloc() : super(MovieGenreLoading()) {
     on<MovieGenreEventStart>(_onMovieGenreEventStart);
   }
+
   Future<void> _onMovieGenreEventStart(MovieGenreEventStart event,
       Emitter<MovieGenreState> emit) async {
     final service = ApiService();
@@ -21,27 +22,4 @@ class MovieGenreBloc extends Bloc<MovieGenreEvent, MovieGenreState> {
     }
   }
 
-// MovieBloc() : super(MovieLoading());
-//
-// Stream<MovieState> mapEventToState(MovieEvent event) async* {
-//   if (event is MovieEventStart) {
-//     yield* _mapMovieEventStateToState(event.movieId, event.query);
-//   }
-// }
-//
-// Stream<MovieState> _mapMovieEventStateToState(
-//     int movieId, String query) async* {
-//   final service = ApiService();
-//   yield MovieLoading();
-//   try {
-//     List<Movie> movieList;
-//     if (movieId == 0) {
-//       movieList = await service.getNowPlayingMovie();
-//       yield MovieLoaded(movieList);
-//     } else {}
-//   } on Exception catch (e) {
-//     print(e);
-//     yield MovieError();
-//   }
-// }
 }

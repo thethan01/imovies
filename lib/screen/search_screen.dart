@@ -3,12 +3,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:imovies/constant.dart';
+import 'package:imovies/models/movie.dart';
 import 'package:imovies/screen/detail_screen.dart';
 
 import '../blocs/search/search_bloc.dart';
 import '../blocs/search/search_event.dart';
 import '../blocs/search/search_state.dart';
-import '../models/search_result.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({Key? key}) : super(key: key);
@@ -56,13 +56,17 @@ class _SearchScreenState extends State<SearchScreen> {
               maxLines: 1,
               onChanged: (text) {
                 _searchBloc.add(
-                  TextChanged(query: text),
+                  TextChanged(query: text.trim()),
                 );
               },
               controller: _textController,
               style: const TextStyle(color: Colors.white, fontSize: 14),
               textInputAction: TextInputAction.done,
               decoration: InputDecoration(
+                suffixIcon: GestureDetector(
+                  onTap: _onClearTapped,
+                  child: const Icon(CupertinoIcons.clear_circled_solid),
+                ),
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                     borderSide: const BorderSide(color: kDarkColor)),
@@ -84,6 +88,11 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
     );
   }
+
+  void _onClearTapped() {
+    _textController.text = '';
+    _searchBloc.add(const TextChanged(query: ''));
+  }
 }
 
 class _SearchBody extends StatelessWidget {
@@ -95,9 +104,7 @@ class _SearchBody extends StatelessWidget {
           return const Center(child: CircularProgressIndicator());
         }
         if (state is SearchStateError) {
-          return const Center(
-              child: Text('Error',
-                  style: TextStyle(fontSize: 16, color: Colors.white)));
+          return Text(state.error);
         }
         if (state is SearchStateSuccess) {
           return state.items.isEmpty
@@ -125,7 +132,7 @@ class _SearchBody extends StatelessWidget {
 class _SearchResults extends StatelessWidget {
   const _SearchResults({required this.items});
 
-  final List<SearchResultItem> items;
+  final List<Movie> items;
 
   @override
   Widget build(BuildContext context) {
@@ -138,17 +145,17 @@ class _SearchResults extends StatelessWidget {
           crossAxisCount: 2,
           childAspectRatio: 2 / 3),
       itemBuilder: (BuildContext context, int index) {
+        Movie movie = items[index];
         return GestureDetector(
           onTap: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => DetailScreen(movie: items)),
+                  builder: (context) => DetailScreen(movie: movie)),
             );
           },
           child: CachedNetworkImage(
-            imageUrl:
-                'https://image.tmdb.org/t/p/original/${items[index].posterPath}',
+            imageUrl: 'https://image.tmdb.org/t/p/original/${movie.posterPath}',
             imageBuilder: (context, imageProvider) {
               return Container(
                 width: MediaQuery.of(context).size.width / 2.8,

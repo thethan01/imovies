@@ -7,10 +7,14 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:imovies/blocs/movie/movie_bloc.dart';
 import 'package:imovies/blocs/movie/movie_event.dart';
 import 'package:imovies/blocs/movie/movie_state.dart';
+import 'package:imovies/blocs/search/search_bloc.dart';
 import 'package:imovies/constant.dart';
 import 'package:imovies/models/movie.dart';
 import 'package:imovies/screen/detail_screen.dart';
 import 'package:imovies/screen/category.dart';
+import 'package:imovies/screen/search_screen.dart';
+
+import '../blocs/search/search_event.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -23,20 +27,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
 
-  final _textController = TextEditingController();
-
-  // late SearchBloc _githubSearchBloc;
-
   @override
   void initState() {
     super.initState();
-    // _githubSearchBloc = context.read<SearchBloc>();
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
   }
 
   @override
@@ -46,6 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
         BlocProvider<MovieBloc>(
           create: (_) => MovieBloc()..add(const MovieEventStart(0, '')),
         ),
+        BlocProvider<SearchBloc>(
+          create: (_) => SearchBloc()..add(const TextChanged(query: '')),
+        ),
       ],
       child: Scaffold(
         backgroundColor: kBackgroundColor,
@@ -54,74 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             if (_selectedIndex == 0) {
               return homeScreen();
             } else if (_selectedIndex == 1) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 25, left: 25),
-                    child: Text(
-                      'What do you want to watch?',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 25, left: 25),
-                    child: TextField(
-                      maxLines: 1,
-                      onChanged: (text) {
-                        // _githubSearchBloc.add(
-                        //   TextChanged(query: text),
-                        // );
-                      },
-                      controller: _textController,
-                      style: const TextStyle(color: Colors.white, fontSize: 14),
-                      textInputAction: TextInputAction.done,
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                            borderSide: const BorderSide(color: kDarkColor)),
-                        hintText: 'Seach',
-                        hintStyle: const TextStyle(color: Colors.white),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                        fillColor: kDarkColor,
-                        filled: true,
-                      ),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20, bottom: 20, left: 25),
-                    child: Text(
-                      'Top Search',
-                      style: TextStyle(
-                          fontSize: 18,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  // BlocBuilder<SearchCubit, SearchState>(
-                  //     builder: (context, state) {
-                  //   if (state is SearchInitial) {
-                  //     return const Center(
-                  //       child: Text(
-                  //         "There's nothing here",
-                  //         style: TextStyle(color: Colors.white),
-                  //       ),
-                  //     );
-                  //   }
-                  //   if (state is SearchLoadedState) {}
-                  //   if (state is SearchErrorState) {
-                  //     return const Text('Error'); //ErrorPage in progress
-                  //   } else {
-                  //     return Container();
-                  //   }
-                  // })
-                ],
-              );
+              return SearchScreen();
             } else if (_selectedIndex == 2) {
               return const Center(
                   child: Text(
